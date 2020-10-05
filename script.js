@@ -7,8 +7,8 @@ let temp = 0;
 let operationClick = false;
 let operation = '';
 
-for (let i = 0; i < numbers.length; i += 1) {
-  numbers[i].addEventListener('click', (e) => {
+numbers.forEach((number) => {
+  number.addEventListener('click', (e) => {
     if (operationClick) {
       display.textContent = '';
       operationClick = false;
@@ -27,10 +27,10 @@ for (let i = 0; i < numbers.length; i += 1) {
       }
     }
   });
-}
+});
 
-for (let i = 0; i < operations.length; i += 1) {
-  operations[i].addEventListener('click', (e) => {
+operations.forEach((oper) => {
+  oper.addEventListener('click', (e) => {
     if (!operation) {
       temp = Number(display.textContent);
     }
@@ -54,12 +54,12 @@ for (let i = 0; i < operations.length; i += 1) {
     }
     operationClick = true;
     operation = e.target.textContent;
-    display.textContent = temp;
+    display.textContent = String(temp).length > 10 ? String(temp).slice(0,10) : temp;
   });
-}
+});
 
-for (let i = 0; i < clean.length; i += 1) {
-  clean[i].addEventListener('click', (e) => {
+clean.forEach((cleanButton) => {
+  cleanButton.addEventListener('click', (e) => {
     if (e.target.textContent === 'C') {
       temp = 0;
       operationClick = false;
@@ -70,4 +70,4 @@ for (let i = 0; i < clean.length; i += 1) {
       display.textContent = 0;
     }
   });
-}
+});
