@@ -17,6 +17,7 @@
     text-align: right;
     line-height: 70px;
     color: #ce7018;
+    overflow: hidden;
 }
 
 .control {
