@@ -4,6 +4,6 @@
 
 [Result](https://ebces.github.io/calculator/)
 
-**Descriptiom**
+**Description**
 
 *Calculator* performing such mathematical operations as addition, subtraction, multiplication, division. JS was used to describe the logic.
