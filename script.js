@@ -3,15 +3,15 @@ const numbers = document.querySelectorAll('.control__button--number');
 const operations = document.querySelectorAll('.control__button--operation');
 const clean = document.querySelectorAll('.control__button--clean');
 
-let temp = 0;
-let operationClick = false;
+let displayedValue = 0;
+let isOperationClicked = false;
 let operation = '';
 
 numbers.forEach((number) => {
   number.addEventListener('click', (e) => {
-    if (operationClick) {
+    if (isOperationClicked) {
       display.textContent = '';
-      operationClick = false;
+      isOperationClicked = false;
     }
     if (display.textContent === '0') {
       display.textContent = '';
@@ -32,37 +32,37 @@ numbers.forEach((number) => {
 operations.forEach((oper) => {
   oper.addEventListener('click', (e) => {
     if (!operation) {
-      temp = Number(display.textContent);
+      displayedValue = Number(display.textContent);
     }
-    if (!operationClick) {
+    if (!isOperationClicked) {
       switch (operation) {
         case '+':
-          temp += Number(display.textContent);
+          displayedValue += Number(display.textContent);
           break;
         case '-':
-          temp -= Number(display.textContent);
+          displayedValue -= Number(display.textContent);
           break;
         case '/':
-          temp /= Number(display.textContent);
+          displayedValue /= Number(display.textContent);
           break;
         case '*':
-          temp *= Number(display.textContent);
+          displayedValue *= Number(display.textContent);
           break;
         case '=':
-          temp = Number(display.textContent);
+          displayedValue = Number(display.textContent);
       }
     }
-    operationClick = true;
+    isOperationClicked = true;
     operation = e.target.textContent;
-    display.textContent = String(temp).length > 10 ? String(temp).slice(0,10) : temp;
+    display.textContent = String(displayedValue).length > 10 ? String(displayedValue).slice(0,10) : displayedValue;
   });
 });
 
 clean.forEach((cleanButton) => {
   cleanButton.addEventListener('click', (e) => {
     if (e.target.textContent === 'C') {
-      temp = 0;
-      operationClick = false;
+      displayedValue = 0;
+      isOperationClicked = false;
       operation = '';
       display.textContent = 0;
     }
