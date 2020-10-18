@@ -7,54 +7,85 @@ let displayedValue = 0;
 let isOperationClicked = false;
 let operation = '';
 
+const getValue = (currentValue, value) => {
+  const isCorrectNumber = currentValue.length < 10 && value !== '.';
+  const isDot = currentValue.indexOf('.') === -1 && value === '.';
+  let result = currentValue;
+
+  if (isOperationClicked) {
+    isOperationClicked = false;
+    result = '';
+  }
+  if (result === '0') {
+    result = '';
+  }
+  if (isCorrectNumber) {
+    result += value;
+  }
+  if (isDot) {
+    if (result === '') {
+      result += '0.';
+    } else {
+      result += '.';
+    }
+  }
+
+  return result;
+};
+
+const changeDisplayedValue = (value) => {
+  display.textContent = getValue(display.textContent, value);
+};
+
+const changeOperation = (value) => {
+  if (!operation) {
+    displayedValue = Number(display.textContent);
+  }
+  if (!isOperationClicked) {
+    switch (operation) {
+      case '+':
+        displayedValue += Number(display.textContent);
+        break;
+      case '-':
+        displayedValue -= Number(display.textContent);
+        break;
+      case '/':
+        displayedValue /= Number(display.textContent);
+        break;
+      case '*':
+        displayedValue *= Number(display.textContent);
+        break;
+      case '=':
+        displayedValue = Number(display.textContent);
+        break;
+      case 'Enter':
+        displayedValue = Number(display.textContent);
+        break;
+    }
+  }
+  isOperationClicked = true;
+  operation = value;
+  display.textContent = String(displayedValue).length > 10 ? String(displayedValue).slice(0, 10) : displayedValue;
+};
+
+document.addEventListener('keyup', (e) => {
+  if (/([0-9]|\.)/.test(e.key)) {
+    changeDisplayedValue(e.key);
+  }
+  if (/(\/|\*|\-|\+|Enter)/.test(e.key)) {
+    changeOperation(e.key);
+  }
+});
+
 numbers.forEach((number) => {
   number.addEventListener('click', (e) => {
-    if (isOperationClicked) {
-      display.textContent = '';
-      isOperationClicked = false;
-    }
-    if (display.textContent === '0') {
-      display.textContent = '';
-    }
-    if (display.textContent.length < 10 && e.target.textContent !== '.') {
-      display.textContent += e.target.innerText;
-    }
-    if (display.textContent.indexOf('.') === -1 && e.target.textContent === '.') {
-      if (display.textContent === '') {
-        display.textContent += '0.';
-      } else {
-        display.textContent += '.';
-      }
-    }
+    changeDisplayedValue(e.target.textContent);
   });
 });
 
 operations.forEach((oper) => {
   oper.addEventListener('click', (e) => {
-    if (!operation) {
-      displayedValue = Number(display.textContent);
-    }
-    if (!isOperationClicked) {
-      switch (operation) {
-        case '+':
-          displayedValue += Number(display.textContent);
-          break;
-        case '-':
-          displayedValue -= Number(display.textContent);
-          break;
-        case '/':
-          displayedValue /= Number(display.textContent);
-          break;
-        case '*':
-          displayedValue *= Number(display.textContent);
-          break;
-        case '=':
-          displayedValue = Number(display.textContent);
-      }
-    }
-    isOperationClicked = true;
-    operation = e.target.textContent;
-    display.textContent = String(displayedValue).length > 10 ? String(displayedValue).slice(0,10) : displayedValue;
+    changeOperation(e.target.textContent);
   });
 });
 
