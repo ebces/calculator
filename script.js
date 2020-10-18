@@ -7,25 +7,35 @@ let displayedValue = 0;
 let isOperationClicked = false;
 let operation = '';
 
-const dataInput = (value) => {
+const getValue = (currentValue, value) => {
+  const isCorrectNumber = currentValue.length < 10 && value !== '.';
+  const isDot = currentValue.indexOf('.') === -1 && value === '.';
+  let result = currentValue;
+
   if (isOperationClicked) {
-    display.textContent = '';
     isOperationClicked = false;
+    result = '';
   }
-  if (display.textContent === '0') {
-    display.textContent = '';
+  if (result === '0') {
+    result = '';
   }
-  if (display.textContent.length < 10 && value !== '.') {
-    display.textContent += value;
+  if (isCorrectNumber) {
+    result += value;
   }
-  if (display.textContent.indexOf('.') === -1 && value === '.') {
-    if (display.textContent === '') {
-      display.textContent += '0.';
+  if (isDot) {
+    if (result === '') {
+      result += '0.';
     } else {
-      display.textContent += '.';
+      result += '.';
     }
   }
-}
+
+  return result;
+};
+
+const changeDisplayedValue = (value) => {
+  display.textContent = getValue(display.textContent, value);
+};
 
 const changeOperation = (value) => {
   if (!operation) {
@@ -56,12 +66,11 @@ const changeOperation = (value) => {
   isOperationClicked = true;
   operation = value;
   display.textContent = String(displayedValue).length > 10 ? String(displayedValue).slice(0, 10) : displayedValue;
-}
-
+};
 
 document.addEventListener('keyup', (e) => {
   if (/([0-9]|\.)/.test(e.key)) {
-    dataInput(e.key);
+    changeDisplayedValue(e.key);
   }
   if (/(\/|\*|\-|\+|Enter)/.test(e.key)) {
     changeOperation(e.key);
@@ -70,10 +79,9 @@ document.addEventListener('keyup', (e) => {
 
 numbers.forEach((number) => {
   number.addEventListener('click', (e) => {
-    dataInput(e.target.textContent);
+    changeDisplayedValue(e.target.textContent);
   });
 });
-
 
 operations.forEach((oper) => {
   oper.addEventListener('click', (e) => {
